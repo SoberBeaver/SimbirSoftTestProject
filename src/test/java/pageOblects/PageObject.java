@@ -1,11 +1,26 @@
 package pageOblects;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
+
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Optional;
 
 public class PageObject {
+    WebDriver driver;
+
+    public PageObject(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(this.driver, this);
+    }
+
     @FindBy(xpath = "//input[@id='firstName']")
     private WebElement firstName;
     @FindBy(css = "#lastName")
@@ -20,14 +35,19 @@ public class PageObject {
     private WebElement genderOther;
     @FindBy(id = "userNumber")
     private WebElement mobileNumber;
-
     @FindBy(id = "dateOfBirthInput")
     private WebElement dateOfBirth;
+    @FindBy(css = ".react-datepicker__month-select")
+    private WebElement monthSelector;
+    @FindBy(css = ".react-datepicker__year-select")
+    private WebElement yearSelector;
+    @FindBy(css = "div.react-datepicker__day:not(.react-datepicker__day--outside-month)")
+    private List<WebElement> daysElements;
+    @FindBy(id = "subjectsInput")
+    private WebElement subjectsInput;
+    @FindBy(id = "uploadPicture")
+    private WebElement uploadPicture;
 
-    public void setDateOfBirth() {
-        dateOfBirth.click();
-
-    }
 
     public void setFirstName(String name) {
         firstName.sendKeys(name);
@@ -41,9 +61,11 @@ public class PageObject {
         userEmail.sendKeys(email);
     }
 
+
     public enum Gender {
-        MALE, FEMALE, OTHER
+        MALE, FEMALE, OTHER;
     }
+
     public void setGender(Gender gender) {
         switch (gender) {
             case MALE -> genderMale.click();
@@ -56,10 +78,27 @@ public class PageObject {
         mobileNumber.sendKeys(number);
     }
 
-    WebDriver driver;
+    public void setDateOfBirth(int day, int month, int year) {
+        dateOfBirth.click();
+        Select yearSelect = new Select(yearSelector);
+        yearSelect.selectByValue(String.valueOf(year));
+        Select monthSelect = new Select(monthSelector);
+        monthSelect.selectByValue(String.valueOf(month - 1));
 
-    public PageObject(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(this.driver, this);
+        String dayClass = String.format("react-datepicker__day--%03d", day);
+        WebElement dayElem = daysElements.stream()
+                .filter(e -> e.getAttribute("class").contains(dayClass))
+                .findFirst().get();
+        dayElem.click();
+    }
+
+    public void setSubjects(String subject) {
+        subjectsInput.sendKeys(subject);
+        subjectsInput.sendKeys(Keys.RETURN);
+    }
+
+    public void setUploadPicture(String pictureName) {
+        Path resourceDirectory = Paths.get("src", "test", "resources", pictureName);
+        uploadPicture.sendKeys(resourceDirectory.toFile().getAbsolutePath());
     }
 }

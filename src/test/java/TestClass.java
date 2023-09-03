@@ -29,5 +29,8 @@ public class TestClass {
 //        page.setGender(Gender.MALE);
         page.setGender(Gender.FEMALE);
         page.setMobileNumber(String.valueOf(new Random().nextLong(9_000_000_000L, 10_000_000_000L)));
+        page.setDateOfBirth(19, 4, 1954);
+        page.setSubjects("hindi");
+        page.setUploadPicture("Agentdalecooper.jpg");
     }
 }
