@@ -1,5 +1,6 @@
 package pageOblects;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,16 +8,14 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
 
-public class PageObject {
+public class StudentRegistrationFormPage {
     WebDriver driver;
 
-    public PageObject(WebDriver driver) {
+    public StudentRegistrationFormPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(this.driver, this);
     }
@@ -47,6 +46,14 @@ public class PageObject {
     private WebElement subjectsInput;
     @FindBy(id = "uploadPicture")
     private WebElement uploadPicture;
+    @FindBy(id = "currentAddress")
+    private WebElement currentAddress;
+    @FindBy(id = "state")
+    private WebElement state;
+    @FindBy(id = "city")
+    private WebElement city;
+    @FindBy(id = "submit")
+    private WebElement submit;
 
 
     public void setFirstName(String name) {
@@ -100,5 +107,23 @@ public class PageObject {
     public void setUploadPicture(String pictureName) {
         Path resourceDirectory = Paths.get("src", "test", "resources", pictureName);
         uploadPicture.sendKeys(resourceDirectory.toFile().getAbsolutePath());
+    }
+
+    public void setCurrentAddress(String address) {
+        currentAddress.sendKeys(address);
+    }
+
+    public void setState(String selectedState) {
+        state.click();
+        driver.findElement(By.xpath("//div[text()='" + selectedState + "']")).click();
+    }
+
+    public void setCity(String selectedCity) {
+        city.click();
+        driver.findElement(By.xpath("//div[text()='" + selectedCity + "']")).click();
+    }
+
+    public void clickSubmit() {
+        submit.click();
     }
 }
