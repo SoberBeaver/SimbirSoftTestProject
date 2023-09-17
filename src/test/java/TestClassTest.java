@@ -1,4 +1,5 @@
 import com.google.common.collect.ImmutableList;
+import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,7 +16,8 @@ import java.util.Random;
 
 import static java.util.Optional.empty;
 
-public class TestClass {
+@Feature("Submit Student Registration Form")
+public class TestClassTest {
     static ChromeDriver driver;
 
     @BeforeAll
@@ -38,7 +40,7 @@ public class TestClass {
     }
 
     @Test
-    @Feature("Submit Student Registration Form")
+    @Description("Submit Student Registration Form")
     void submitStudentRegistrationForm() {
         String firstName = "Dale";
         String lastName = "Cooper";
