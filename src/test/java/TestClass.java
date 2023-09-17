@@ -39,7 +39,7 @@ public class TestClass {
 
     @Test
     @Feature("Submit Student Registration Form")
-    void startWebDriver() {
+    void submitStudentRegistrationForm() {
         String firstName = "Dale";
         String lastName = "Cooper";
         String email = "d.cooper@fbi.gov";
